@@ -24,20 +24,22 @@ export function BottomNavigationBar() {
           aria-label={it.label}
           className={({ isActive }) =>
             [
-              "relative flex flex-1 flex-col items-center justify-center gap-1",
+              "relative flex flex-1 flex-col items-center justify-center gap-1.5",
               isActive ? "text-brand" : "text-content-tertiary",
             ].join(" ")
           }
         >
           {({ isActive }) => (
             <>
-              {isActive && (
-                <span className="absolute top-2 h-8 w-16 rounded-full bg-brand-50" aria-hidden />
-              )}
-              <span className="relative">
-                <PhIcon name={it.icon} size={22} weight={isActive ? "fill" : "regular"} />
-              </span>
-              <span className="relative t-label-sm">{it.label}</span>
+              <div className="relative flex h-8 w-16 items-center justify-center">
+                {isActive && (
+                  <span className="absolute inset-0 rounded-full bg-brand-50" aria-hidden />
+                )}
+                <span className="relative z-10">
+                  <PhIcon name={it.icon} size={22} weight={isActive ? "fill" : "regular"} />
+                </span>
+              </div>
+              <span className="relative t-label-sm leading-none">{it.label}</span>
             </>
           )}
         </NavLink>

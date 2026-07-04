@@ -19,13 +19,20 @@ export function PhoneFrame({
       className="relative shrink-0 overflow-hidden rounded-[44px] border-[10px] border-[#0b1220] bg-bg-app shadow-2xl"
       style={{ width: 390, height: 844 }}
     >
-      {/* notch */}
-      <div className="absolute left-1/2 top-0 z-[210] h-7 w-36 -translate-x-1/2 rounded-b-2xl bg-[#0b1220]" />
+      {/* Dynamic Island */}
+      <div className="absolute left-1/2 top-3 z-[210] h-[34px] w-[120px] -translate-x-1/2 rounded-[24px] bg-black shadow-[inset_0_0_2px_rgba(255,255,255,0.1)]" />
       {/* status bar */}
-      <div className="absolute inset-x-0 top-0 z-[205] flex h-7 items-center justify-between px-6 text-[11px] font-semibold text-content-primary">
-        <span>9:41</span>
-        <span className="tracking-tight">YONO · SYNTHETIC</span>
-        <span>100%</span>
+      <div className="absolute inset-x-0 top-0 z-[205] flex h-14 items-center justify-between px-8 text-[15px] font-semibold tracking-tight text-white drop-shadow-md">
+        <span className="mt-1">9:41</span>
+        <div className="mt-1 flex items-center gap-2">
+           <svg className="h-3 w-4 fill-current opacity-80" viewBox="0 0 16 12">
+             <path d="M1 11h2V7H1v4zm4 0h2V5H5v6zm4 0h2V3H9v8zm4-10v10h2V1h-2z"/>
+           </svg>
+           <svg className="h-3 w-4 fill-current opacity-80" viewBox="0 0 16 12">
+             <path d="M8 1L0 9h16L8 1z"/>
+           </svg>
+           <span>100%</span>
+        </div>
       </div>
 
       <motion.div

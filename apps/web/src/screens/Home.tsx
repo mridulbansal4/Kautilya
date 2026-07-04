@@ -35,6 +35,8 @@ const QUICK_ALL = [
   { icon: "TrendUp", label: "Invest", to: "/app/invest" },
 ];
 
+import { ShieldCheck } from "@phosphor-icons/react";
+
 export default function Home() {
   const { customer, profile, nba, loading } = useAdaptive();
   const nav = useNavigate();
@@ -74,26 +76,42 @@ export default function Home() {
   }
 
   return (
-    <div className="phone-scroll flex-1 overflow-y-auto pb-28 bg-slate-50">
+    <div className="phone-scroll flex-1 overflow-y-auto pb-28 bg-slate-50/50">
       {/* header */}
-      <div className="bg-brand px-6 pb-8 pt-4 text-white rounded-b-3xl shadow-sm">
+      <div className="bg-brand px-5 pb-8 pt-6 text-white shadow-sm relative z-10">
         <div className="flex items-start justify-between">
-          <div>
-            <p className="t-body-sm text-white/70">Welcome back</p>
-            <h1 className={simplify ? "t-headline" : "t-headline-sm"}>{profile?.greeting}</h1>
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2">
+               <p className="text-[13px] text-white/70 font-medium tracking-wide">Welcome back</p>
+               {aiEnabled && (
+                 <span className="flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[10px] uppercase tracking-widest text-emerald-300">
+                   <ShieldCheck weight="fill" size={12} /> AI Active
+                 </span>
+               )}
+            </div>
+            <h1 className="text-[28px] font-bold tracking-tight leading-tight">{profile?.greeting}</h1>
           </div>
-          <button
-            onClick={() => nav("/app/notifications")}
-            aria-label="Notifications"
-            className="relative grid h-11 w-11 place-items-center rounded-full hover:bg-white/10"
-          >
-            <Bell size={24} />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-debit" />
-          </button>
+          <div className="flex items-center gap-2">
+            {/* Subtle DCS Surface in header */}
+            {customer?.dcs && (
+               <div className="flex flex-col items-end justify-center mr-1">
+                 <span className="text-[10px] text-white/60 font-medium uppercase tracking-widest">DCS</span>
+                 <span className="text-[14px] font-bold text-white leading-none">{customer.dcs.composite}</span>
+               </div>
+            )}
+            <button
+              onClick={() => nav("/app/notifications")}
+              aria-label="Notifications"
+              className="relative grid h-10 w-10 place-items-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+            >
+              <Bell size={20} />
+              <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full bg-rose-500 border-2 border-brand" />
+            </button>
+          </div>
         </div>
       </div>
 
-      <div className="screen-stack -mt-5 px-6 space-y-6">
+      <div className="screen-stack -mt-4 px-5 space-y-6 relative z-20">
         {/* account */}
         {account && (
           <AccountCard
@@ -116,40 +134,47 @@ export default function Home() {
           />
         )}
 
-        {/* AI slot 1 — the engine-authored nudge (or success after confirm). Plain conditional so
-            exactly one card is mounted at a time; each has its own entrance motion. */}
+        {/* AI slot 1 — the engine-authored nudge (or success after confirm). */}
         {done ? (
           <motion.section
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="rounded-lg border border-ai-border bg-ai-surface p-4 shadow-ai"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="rounded-2xl border border-emerald-100 bg-emerald-50 p-5 shadow-sm"
           >
-            <div className="flex items-center gap-2 text-credit">
-              <CheckCircle size={22} weight="fill" />
-              <span className="t-title-sm text-content-primary">Activated — nice move.</span>
-              <Confetti size={20} weight="fill" className="ml-auto text-ai" />
+            <div className="flex items-center gap-3 text-emerald-600 mb-2">
+              <CheckCircle size={24} weight="fill" />
+              <span className="text-[16px] font-bold tracking-tight">Priority Complete</span>
+              <Confetti size={20} weight="fill" className="ml-auto text-emerald-500" />
             </div>
-            <p className="mt-1 t-body text-content-secondary">
+            <p className="text-[14px] text-emerald-800 leading-relaxed">
               {action?.product_name} started at {inr(action?.suggested_ticket ?? 0)}. You moved from{" "}
-              <strong>dormant → active</strong>, products-per-customer +1. The desk dashboard just ticked.
+              <strong>dormant → active</strong>. The desk dashboard just ticked.
             </p>
           </motion.section>
         ) : aiEnabled && loading ? (
-          <div>
-            <div className="mb-1 flex items-center gap-2">
-              <SBIBadge variant="ai">AI is analysing your account…</SBIBadge>
+          <div className="animate-pulse flex flex-col gap-3 p-5 rounded-2xl bg-white border border-slate-100 shadow-sm">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="h-4 w-4 bg-ai/20 rounded-full" />
+              <div className="h-3 w-32 bg-slate-200 rounded" />
             </div>
-            <AISkeleton height={128} />
+            <div className="h-6 w-3/4 bg-slate-200 rounded" />
+            <div className="h-4 w-1/2 bg-slate-100 rounded" />
+            <div className="mt-4 flex gap-3">
+              <div className="h-10 w-24 bg-slate-200 rounded-xl" />
+            </div>
           </div>
         ) : showInsight && nba?.content ? (
-          <AIInsightCard
-            content={nba.content}
-            confidence={nba.confidence}
-            onPrimary={() => setConfirmOpen(true)}
-            onDismiss={() => dismissInsight(insightId)}
-            onWhy={() => setWhyOpen(true)}
-          />
+          <div className="flex flex-col gap-2">
+            <h2 className="text-[12px] font-bold tracking-widest text-slate-400 uppercase ml-1">Today's Financial Priority</h2>
+            <AIInsightCard
+              content={nba.content}
+              confidence={nba.confidence}
+              onPrimary={() => setConfirmOpen(true)}
+              onDismiss={() => dismissInsight(insightId)}
+              onWhy={() => setWhyOpen(true)}
+            />
+          </div>
         ) : null}
 
         {/* quick actions (capped by max_choices for choice-overload mitigation) */}

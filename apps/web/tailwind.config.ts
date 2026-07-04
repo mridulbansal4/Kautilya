@@ -66,6 +66,7 @@ export default {
         e8: "var(--shadow-8)",
         e16: "var(--shadow-16)",
         e24: "var(--shadow-24)",
+        apple: "var(--shadow-apple)",
         ai: "var(--shadow-ai)",
         "ai-strong": "var(--shadow-ai-strong)",
       },

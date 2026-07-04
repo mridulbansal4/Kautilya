@@ -71,7 +71,7 @@ export const MOCK_PROFILES: Record<string, AdaptiveUIProfile> = {
     language_register: "hinglish", contrast_mode: "standard", max_choices: 3,
     copy_tone: "playful_motivational",
     surfaced_ai_components: ["AISpendingSummaryWidget", "AIInsightCard", "DCSRing"],
-    simplify_ui: false, greeting: "Aur Aarav, kya scene hai?", data_source: "SYNTHETIC",
+    simplify_ui: false, greeting: "Good morning, Aarav", data_source: "SYNTHETIC",
   },
   cust_mohan: {
     customer_id: "cust_mohan", archetype: "senior", density: "spacious", font_scale: 1.3,
