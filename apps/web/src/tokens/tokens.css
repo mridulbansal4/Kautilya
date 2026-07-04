@@ -1,0 +1,123 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   tokens.css — reproduced from DESIGN.md §4 (canonical). No component may use a raw
+   hex/px; everything references these vars (via the Tailwind preset).
+   ───────────────────────────────────────────────────────────────────────────── */
+:root {
+  /* Blue family (SBI primary = blue-700) */
+  --colour-blue-50: #e3f2fd;
+  --colour-blue-100: #bbdefb;
+  --colour-blue-500: #2563eb;
+  --colour-blue-700: #1a3f7a;
+  --colour-blue-800: #15347a;
+  --colour-blue-900: #0d2557;
+
+  /* Neutrals */
+  --colour-neutral-0: #ffffff;
+  --colour-neutral-100: #f5f5f5;
+  --colour-neutral-200: #eeeeee;
+  --colour-neutral-300: #e0e0e0;
+  --colour-neutral-400: #bdbdbd;
+  --colour-neutral-500: #9e9e9e;
+  --colour-neutral-600: #757575;
+  --colour-neutral-700: #616161;
+  --colour-neutral-800: #424242;
+  --colour-neutral-900: #212121;
+
+  /* Semantic */
+  --colour-green-50: #e8f5e9;
+  --colour-green-700: #2e7d32;
+  --colour-red-50: #ffebee;
+  --colour-red-700: #c62828;
+  --colour-amber-50: #fff8e1;
+  --colour-amber-700: #f57f17;
+  --colour-amber-900: #e65100;
+
+  /* AI brand (AI layer ONLY — DESIGN.md §8.3 Rule 5) */
+  --colour-ai-primary: #5c35cc;
+  --colour-ai-secondary: #7c3aed;
+  --colour-ai-surface: #f3f0ff;
+  --colour-ai-on-surface: #2d1b69;
+  --colour-ai-border: rgba(92, 53, 204, 0.25);
+
+  /* Semantic role tokens */
+  --colour-brand-primary: var(--colour-blue-700);
+  --colour-brand-primary-light: var(--colour-blue-500);
+  --colour-bg-app: var(--colour-neutral-100);
+  --colour-bg-surface: var(--colour-neutral-0);
+  --colour-content-primary: var(--colour-neutral-900);
+  --colour-content-secondary: var(--colour-neutral-700);
+  --colour-content-tertiary: var(--colour-neutral-500);
+  --colour-content-disabled: var(--colour-neutral-400);
+  --colour-content-inverse: var(--colour-neutral-0);
+  --colour-credit: var(--colour-green-700);
+  --colour-debit: var(--colour-red-700);
+  --colour-pending: var(--colour-amber-700);
+  --colour-border-default: var(--colour-neutral-300);
+
+  /* Typography */
+  --font-family-primary: "Noto Sans", "Roboto", system-ui, -apple-system, sans-serif;
+  --font-family-mono: "Roboto Mono", "SF Mono", "Courier New", monospace;
+
+  /* Type scale (px; multiplied by --font-scale at the phone root) */
+  --type-display-size: 36px;
+  --type-headline-large-size: 32px;
+  --type-headline-medium-size: 28px;
+  --type-headline-small-size: 24px;
+  --type-title-large-size: 22px;
+  --type-title-medium-size: 18px;
+  --type-title-small-size: 16px;
+  --type-body-large-size: 16px;
+  --type-body-medium-size: 14px;
+  --type-body-small-size: 12px;
+  --type-label-large-size: 14px;
+  --type-label-medium-size: 12px;
+  --type-label-small-size: 11px;
+
+  /* Radius */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 28px;
+  --radius-full: 9999px;
+
+  /* Shadow */
+  --shadow-1: 0px 1px 2px rgba(0, 0, 0, 0.12), 0px 0px 1px rgba(0, 0, 0, 0.08);
+  --shadow-2: 0px 2px 4px rgba(0, 0, 0, 0.14), 0px 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-3: 0px 4px 8px rgba(0, 0, 0, 0.16), 0px 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-4: 0px 4px 5px rgba(0, 0, 0, 0.14), 0px 1px 10px rgba(0, 0, 0, 0.12),
+    0px 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-8: 0px 8px 10px rgba(0, 0, 0, 0.2), 0px 3px 14px rgba(0, 0, 0, 0.12),
+    0px 5px 5px rgba(0, 0, 0, 0.14);
+  --shadow-16: 0px 16px 24px rgba(0, 0, 0, 0.24), 0px 6px 30px rgba(0, 0, 0, 0.12),
+    0px 8px 10px rgba(0, 0, 0, 0.14);
+  --shadow-24: 0px 24px 38px rgba(0, 0, 0, 0.24), 0px 9px 46px rgba(0, 0, 0, 0.12),
+    0px 11px 15px rgba(0, 0, 0, 0.14);
+  --shadow-ai: 0px 4px 24px rgba(92, 53, 204, 0.2), 0px 1px 4px rgba(92, 53, 204, 0.12);
+  --shadow-ai-strong: 0px 8px 32px rgba(92, 53, 204, 0.32), 0px 2px 8px rgba(92, 53, 204, 0.16);
+
+  /* Duration + easing */
+  --duration-short: 100ms;
+  --duration-short-2: 150ms;
+  --duration-medium: 200ms;
+  --duration-medium-2: 250ms;
+  --duration-long: 300ms;
+  --duration-long-2: 400ms;
+  --duration-ai-thinking: 1400ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0, 1);
+  --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* persona-adaptive multiplier (overridden on the phone root per AdaptiveUIProfile) */
+  --font-scale: 1;
+}
+
+/* High-contrast override (senior persona — DESIGN.md §12.1 theme-ready tokens) */
+[data-contrast="high"] {
+  --colour-content-secondary: var(--colour-neutral-900);
+  --colour-content-tertiary: var(--colour-neutral-700);
+  --colour-border-default: var(--colour-neutral-600);
+}

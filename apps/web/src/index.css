@@ -1,0 +1,90 @@
+@import "./tokens/tokens.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── base ─────────────────────────────────────────────────────────────────── */
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  background: #0b1220; /* the stage behind the phone frame — off-black, not #000 */
+  color: var(--colour-content-primary);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ── Typography scale (DESIGN.md §4.2) — every size × --font-scale so a persona
+      switch rescales the ENTIRE tree from one CSS var. ──────────────────────── */
+.t-display    { font-size: calc(var(--type-display-size) * var(--font-scale)); line-height: 1.18; font-weight: 700; letter-spacing: -0.02em; }
+.t-headline   { font-size: calc(var(--type-headline-medium-size) * var(--font-scale)); line-height: 1.2; font-weight: 700; letter-spacing: -0.01em; }
+.t-headline-sm{ font-size: calc(var(--type-headline-small-size) * var(--font-scale)); line-height: 1.25; font-weight: 600; }
+.t-title-lg   { font-size: calc(var(--type-title-large-size) * var(--font-scale)); line-height: 1.27; font-weight: 600; }
+.t-title      { font-size: calc(var(--type-title-medium-size) * var(--font-scale)); line-height: 1.33; font-weight: 600; }
+.t-title-sm   { font-size: calc(var(--type-title-small-size) * var(--font-scale)); line-height: 1.38; font-weight: 600; }
+.t-body-lg    { font-size: calc(var(--type-body-large-size) * var(--font-scale)); line-height: 1.5; font-weight: 400; }
+.t-body       { font-size: calc(var(--type-body-medium-size) * var(--font-scale)); line-height: 1.43; font-weight: 400; }
+.t-body-sm    { font-size: calc(var(--type-body-small-size) * var(--font-scale)); line-height: 1.33; font-weight: 400; }
+.t-label      { font-size: calc(var(--type-label-large-size) * var(--font-scale)); line-height: 1.43; font-weight: 500; }
+.t-label-sm   { font-size: calc(var(--type-label-small-size) * var(--font-scale)); line-height: 1.45; font-weight: 500; }
+.t-section    { font-size: calc(var(--type-label-large-size) * var(--font-scale)); font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--colour-content-secondary); }
+.t-mono       { font-family: var(--font-family-mono); font-size: calc(var(--type-body-medium-size) * var(--font-scale)); letter-spacing: 0.12em; }
+
+/* ── Density (comfortable | spacious) — sets the vertical rhythm of screen stacks ── */
+.phone-root { --stack-gap: 16px; }
+.phone-root[data-density="spacious"] { --stack-gap: 24px; }
+.phone-root[data-density="compact"]  { --stack-gap: 12px; }
+.screen-stack > * + * { margin-top: var(--stack-gap); }
+
+/* ── AI shimmer (DESIGN.md §6 — loading skeleton) ─────────────────────────── */
+@keyframes ai-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.ai-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--colour-neutral-200) 25%,
+    var(--colour-neutral-100) 37%,
+    var(--colour-neutral-200) 63%
+  );
+  background-size: 200% 100%;
+  animation: ai-shimmer var(--duration-ai-thinking) linear infinite;
+}
+
+/* AI first-appear left-border pulse (DESIGN.md §8.2 AIInsightCard) */
+@keyframes ai-pulse {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 1; }
+}
+.ai-accent-pulse { animation: ai-pulse 2000ms var(--ease-standard) 3; }
+
+/* ── focus ring (a11y — §7) ───────────────────────────────────────────────── */
+:where(button, a, input, [tabindex]):focus-visible {
+  outline: 3px solid var(--colour-blue-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* scrollbar polish on the phone scroll area */
+.phone-scroll::-webkit-scrollbar { width: 0; }
+
+/* ── Reduced motion (DESIGN.md §6.4) ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+  .ai-shimmer,
+  .ai-accent-pulse {
+    animation: none !important;
+  }
+}

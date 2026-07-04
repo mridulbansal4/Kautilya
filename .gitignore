@@ -1,0 +1,29 @@
+# ── Node / web ──
+node_modules/
+apps/web/dist/
+apps/web/.vite/
+*.local
+.DS_Store
+
+# ── Python / api ──
+__pycache__/
+*.py[cod]
+.venv/
+apps/api/.venv/
+.pytest_cache/
+.ruff_cache/
+
+# ── Generated / synthetic data (regenerated on first run) ──
+apps/api/data/audit.db
+apps/api/data/*.db-journal
+data/synthetic/*.json
+
+# ── Env / secrets ──
+.env
+.env.*
+!.env.example
+
+# ── Editor ──
+.idea/
+.vscode/
+*.log

@@ -1,0 +1,14 @@
+{
+  "name": "yono-adoption-copilot",
+  "version": "1.0.0",
+  "private": true,
+  "description": "YONO Adoption Copilot — agentic, explainable, human-in-the-loop AI Intelligence Layer over a reverse-engineered SBI-YONO-style banking UI. SYNTHETIC demo.",
+  "scripts": {
+    "dev": "pnpm --filter web dev",
+    "build": "pnpm --filter web build",
+    "demo": "pnpm --filter web dev"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
