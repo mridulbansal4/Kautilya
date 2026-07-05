@@ -5,7 +5,7 @@ description = "YONO Adoption Copilot — Governed Reasoning Spine (FastAPI). SYN
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
-    "fastapi>=0.111",
+    "fastapi[standard]>=0.111",
     "uvicorn[standard]>=0.30",
     "pydantic>=2.7",
     "networkx>=3.3",
