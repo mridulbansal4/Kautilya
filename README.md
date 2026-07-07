@@ -107,7 +107,7 @@ Dynamically categorizes users based on transactional velocity, life stage, and d
 The ontological brain of KAUTILYA. Maps customers, accounts, transactions, life events, and banking products in a heavily interconnected Neo4j/SQLite graph structure.
 
 ```mermaid
-graph LR
+flowchart LR
     C((Customer)):::primary
     A[Account]:::node
     T[Transaction]:::node
@@ -116,19 +116,19 @@ graph LR
     G[Financial Goal]:::node
     R[Risk Profile]:::node
 
-    C -- OWNS --> A
-    A -- GENERATES --> T
-    T -- INDICATES --> L
-    T -- FUNDS --> G
-    C -- HAS --> R
+    C -- "OWNS" --> A
+    A -- "GENERATES" --> T
+    T -- "INDICATES" --> L
+    T -- "FUNDS" --> G
+    C -- "HAS" --> R
     
-    L -- TRIGGERS_NEED_FOR -.-> P
-    R -- QUALIFIES_FOR -.-> P
-    G -- ACHIEVED_VIA -.-> P
+    L -. "TRIGGERS_NEED_FOR" .-> P
+    R -. "QUALIFIES_FOR" .-> P
+    G -. "ACHIEVED_VIA" .-> P
 
-    classDef primary fill:#1e1e24,stroke:#3b82f6,stroke-width:2px,color:#fff;
-    classDef node fill:#1e1e24,stroke:#4b5563,stroke-width:1px,color:#d1d5db;
-    classDef target fill:#1e1e24,stroke:#10b981,stroke-width:2px,color:#fff;
+    classDef primary fill:#1e1e24,stroke:#3b82f6,stroke-width:2px,color:#fff
+    classDef node fill:#1e1e24,stroke:#4b5563,stroke-width:1px,color:#d1d5db
+    classDef target fill:#1e1e24,stroke:#10b981,stroke-width:2px,color:#fff
 ```
 * **Business Value:** Uncovers hidden cross-sell opportunities (e.g., *Salary Account* → *High Rent Payment* → *Pre-approved Home Loan*).
 * **AI Logic:** Continuous edge-weight decay and reinforcement based on temporal transaction proximity.
@@ -170,36 +170,45 @@ Command centers for banking leadership and compliance officers. The Executive Da
 KAUTILYA is built on a modern, horizontally scalable microservices architecture, separating the intelligence plane from the execution plane.
 
 ```mermaid
-architecture-beta
-    group api(cloud)[KAUTILYA API Gateway]
-    group ai(server)[Intelligence Layer]
-    group data(database)[Data Layer]
+flowchart TD
+    subgraph Clients["Client Interfaces"]
+        react["React / Tailwind Frontend"]
+        yono["Existing YONO App"]
+    end
     
-    service react(internet)[React / Tailwind Frontend]
-    service yono(internet)[Existing YONO App]
+    subgraph API["API Gateway"]
+        fast["FastAPI Core"]
+    end
     
-    service fast(server)[FastAPI Core] in api
+    subgraph AI["Intelligence Layer"]
+        kg["Knowledge Graph Engine"]
+        policy["Deterministic Policy Engine"]
+        llm["Claude Explanation Layer"]
+        rec["Recommendation Pipeline"]
+    end
     
-    service kg(server)[Knowledge Graph Engine] in ai
-    service policy(server)[Deterministic Policy Engine] in ai
-    service llm(server)[Claude Explanation Layer] in ai
-    service rec(server)[Recommendation Pipeline] in ai
+    subgraph Data["Data Layer"]
+        sqlite[/"SQLite & Vector Store"/]
+        audit[/"Immutable Audit Log"/]
+    end
     
-    service sqlite(database)[SQLite / Vector Store] in data
-    service audit(database)[Immutable Audit Log] in data
+    react --> fast
+    yono --> fast
     
-    react:R --> fast:L
-    yono:R --> fast:L
+    fast --> kg
+    fast --> policy
+    fast --> llm
+    fast --> rec
     
-    fast:B --> kg:T
-    fast:B --> policy:T
-    fast:B --> llm:T
-    fast:B --> rec:T
-    
-    kg:B --> sqlite:T
-    rec:B --> sqlite:T
-    policy:B --> audit:T
-    llm:B --> audit:T
+    kg --> sqlite
+    rec --> sqlite
+    policy --> audit
+    llm --> audit
+
+    style Clients fill:#0f172a,stroke:#334155,color:#f8fafc
+    style API fill:#0f172a,stroke:#334155,color:#f8fafc
+    style AI fill:#0f172a,stroke:#3b82f6,color:#f8fafc
+    style Data fill:#0f172a,stroke:#10b981,color:#f8fafc
 ```
 
 > [!TIP]  
