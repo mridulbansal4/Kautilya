@@ -26,7 +26,6 @@ AI-powered intelligence layer that transforms YONO into a personalized, explaina
 <p align="center">
   <a href="#the-problem">Problem</a> •
   <a href="#product-walkthrough">Product</a> •
-  <a href="#interactive-demos">Demos</a> •
   <a href="#system-architecture">Architecture</a> •
   <a href="#algorithms">Algorithms</a> •
   <a href="#feature-matrix">Comparison</a> •
@@ -39,9 +38,6 @@ AI-powered intelligence layer that transforms YONO into a personalized, explaina
 
 > [!IMPORTANT]  
 > **Deterministic Intelligence at Scale.** KAUTILYA does not rely on probabilistic generation for financial decisions. Every recommendation is mathematically validated through a deterministic Policy Engine, graph-traversed for contextual relevance, and cross-referenced with consent matrices before an LLM is permitted to translate the logic into natural language. **Zero hallucination. Full auditability.**
-
-> [!NOTE]  
-> **Visual Assets.** The interface and workflow diagrams presented in this repository are direct renders from our frontend components (`frontend/src/views/`) and generated architecture definitions. All dashboard metrics, graph topologies, and activation flows are derived from the live KAUTILYA SQLite/Neo4j datastore.
 
 ---
 
@@ -60,27 +56,37 @@ It is not just a feature. It is a regulator-ready operating system for personali
 
 ---
 
-## Interactive Demos
+## Process Flow: The Activation Pipeline
 
-<div align="center">
-  <img src="docs/assets/demo.gif" alt="KAUTILYA Platform Demo" width="85%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);"/>
-  <p><em>End-to-end traversal from signal ingestion to human-approved product activation.</em></p>
-</div>
+How a raw transactional signal becomes a converted financial product.
 
-<details>
-<summary><b>View targeted flow demonstrations (Click to expand)</b></summary>
-
-| Recommendation Engine | Knowledge Graph Traversal | Activation Flow |
-| :---: | :---: | :---: |
-| <img src="docs/assets/recommendation.gif" alt="Recommendation Engine" width="100%"/> | <img src="docs/assets/graph.gif" alt="Knowledge Graph" width="100%"/> | <img src="docs/assets/activation.gif" alt="Activation Flow" width="100%"/> |
-| *Real-time eligibility scoring.* | *Deep entity relationship mapping.* | *Frictionless user onboarding.* |
-
-| Persona Adaptation | Executive Dashboard | Customer Journey |
-| :---: | :---: | :---: |
-| <img src="docs/assets/persona.gif" alt="Persona Adaptation" width="100%"/> | <img src="docs/assets/dashboard.gif" alt="Executive Dashboard" width="100%"/> | <img src="docs/assets/journey.gif" alt="Journey Tracking" width="100%"/> |
-| *UI reconfiguration per segment.* | *Macro-level activation metrics.* | *Multi-touchpoint attribution.* |
-
-</details>
+```mermaid
+flowchart TD
+    A[Customer Transactions / Signals] --> B{Signal Ingestion Router}
+    B --> C[Knowledge Graph Embedding]
+    B --> D[Temporal Event Trigger]
+    
+    C --> E[Recommendation Candidate Generation]
+    D --> E
+    
+    E --> F{Deterministic Policy Engine}
+    F -- Fails Rules --> G[Discard / Log]
+    F -- Passes Rules --> H[Next Best Action Ranking]
+    
+    H --> I[LLM Explanation Translation]
+    I --> J{Consent Manager Check}
+    J -- Consent Revoked --> G
+    J -- Consent Granted --> K[Adaptive UI Rendering]
+    
+    K --> L[Customer View]
+    L -- Accepts --> M[Human Approval Queue]
+    M --> N[Audit Store / Execution]
+    
+    style A fill:#0f172a,stroke:#334155,color:#f8fafc
+    style F fill:#0a0a0a,stroke:#ef4444,color:#f8fafc
+    style N fill:#0a0a0a,stroke:#22c55e,color:#f8fafc
+    style I fill:#0f172a,stroke:#8b5cf6,color:#f8fafc
+```
 
 ---
 
@@ -89,37 +95,73 @@ It is not just a feature. It is a regulator-ready operating system for personali
 KAUTILYA consists of 18 integrated subsystems, working in concert to move a customer from dormancy to active product engagement.
 
 ### 1. Persona Engine
-<img src="docs/screenshots/persona_home.png" alt="Persona Engine UI" width="100%" style="border-radius: 8px;"/>
 Dynamically categorizes users based on transactional velocity, life stage, and digital footprint. The engine does not just tag users; it completely reconfigures the frontend experience.
 * **Business Value:** Reduces cognitive load by hiding irrelevant products.
 * **Backend Logic:** K-Means clustering over normalized transaction embeddings.
 
+| Standard YONO UI | KAUTILYA Adaptive UI (Segment: Young Professional) |
+| :--- | :--- |
+| • Generic Home Loan Banner <br> • Standard Fixed Deposit Offer <br> • Fixed Grid Navigation | • **Contextual Action:** "Convert rent to EMI" <br> • **Investment:** "Tax-saving ELSS Mutual Funds" <br> • **Navigation:** Hidden branch locator, surfaced UPI analytics |
+
 ### 2. Knowledge Graph
-<img src="docs/screenshots/knowledge_graph.png" alt="Knowledge Graph View" width="100%" style="border-radius: 8px;"/>
 The ontological brain of KAUTILYA. Maps customers, accounts, transactions, life events, and banking products in a heavily interconnected Neo4j/SQLite graph structure.
+
+```mermaid
+graph LR
+    C((Customer)):::primary
+    A[Account]:::node
+    T[Transaction]:::node
+    L[Life Event]:::node
+    P((Financial Product)):::target
+    G[Financial Goal]:::node
+    R[Risk Profile]:::node
+
+    C -- OWNS --> A
+    A -- GENERATES --> T
+    T -- INDICATES --> L
+    T -- FUNDS --> G
+    C -- HAS --> R
+    
+    L -- TRIGGERS_NEED_FOR -.-> P
+    R -- QUALIFIES_FOR -.-> P
+    G -- ACHIEVED_VIA -.-> P
+
+    classDef primary fill:#1e1e24,stroke:#3b82f6,stroke-width:2px,color:#fff;
+    classDef node fill:#1e1e24,stroke:#4b5563,stroke-width:1px,color:#d1d5db;
+    classDef target fill:#1e1e24,stroke:#10b981,stroke-width:2px,color:#fff;
+```
 * **Business Value:** Uncovers hidden cross-sell opportunities (e.g., *Salary Account* → *High Rent Payment* → *Pre-approved Home Loan*).
 * **AI Logic:** Continuous edge-weight decay and reinforcement based on temporal transaction proximity.
 
 ### 3. Recommendation Engine & Policy Engine
-<img src="docs/screenshots/recommendation_card.png" alt="Recommendation Engine Card" width="100%" style="border-radius: 8px;"/>
 Unlike standard CF models, our engine generates candidates and immediately passes them to a deterministic Policy Engine. If a user is theoretically likely to want a credit card, but lacks the internal risk score, the Policy Engine aggressively prunes the recommendation.
-* **Business Value:** Zero compliance breaches in product marketing. 
-* **Backend Flow:** Candidate Generation → Policy Pruning → Ranking → Presentation.
+
+```mermaid
+sequenceDiagram
+    participant Graph as Knowledge Graph
+    participant Rec as Rec Engine
+    participant Policy as Policy Engine (Deterministic)
+    participant UI as KAUTILYA UI
+    
+    Graph->>Rec: Fetch Candidate Products (e.g. Credit Card)
+    Rec->>Policy: Request Policy Clearance
+    Policy-->>Policy: Check Age > 21
+    Policy-->>Policy: Check CIBIL > 750
+    Policy-->>Policy: Check Debt-to-Income < 40%
+    alt Passes all deterministic rules
+        Policy->>UI: Approved Candidate
+    else Fails any rule
+        Policy->>UI: Pruned (Not shown to user)
+    end
+```
 
 ### 4. Explanation Layer
-<img src="docs/screenshots/policy_engine.png" alt="Explanation Layer" width="100%" style="border-radius: 8px;"/>
-Customers ignore black-box suggestions. KAUTILYA utilizes Anthropic's Claude to translate the exact path traversed through the Knowledge Graph into a natural language justification: *"We noticed your recent tuition payments. Based on your fixed deposits, an Education Loan against collateral offers a 3% lower interest rate."*
+Customers ignore black-box suggestions. KAUTILYA utilizes Anthropic's Claude to translate the exact path traversed through the Knowledge Graph into a natural language justification.
+
+> **UI Output Example:** *"We noticed your recent tuition payments. Based on your fixed deposits, an Education Loan against collateral offers a 3% lower interest rate than your current payment method."*
 
 ### 5. Executive & Audit Dashboards
-<img src="docs/screenshots/executive_dashboard.png" alt="Executive Dashboard" width="100%" style="border-radius: 8px;"/>
-<img src="docs/screenshots/audit_logs.png" alt="Audit Logs" width="100%" style="border-radius: 8px;"/>
 Command centers for banking leadership and compliance officers. The Executive Dashboard tracks global activation metrics, while the Audit Dashboard provides a cryptographic hash of every LLM decision and policy validation step.
-
-### 6. Adaptive UI & Digital Confidence Score
-<img src="docs/screenshots/mobile_home.png" alt="Mobile Home" width="100%" style="border-radius: 8px;"/>
-The interface mutates based on the user's Digital Confidence Score. Senior citizens receive high-contrast, large-typography interfaces with immediate human-fallback options; digital natives receive dense, high-velocity financial tools.
-
-*(Additional core modules including the **Consent Manager**, **Goal Tracking**, **Human Approval Queue**, **Analytics**, and **Cross Sell Engine** are fully documented in the `/docs/modules/` directory).*
 
 ---
 
@@ -162,71 +204,6 @@ architecture-beta
 
 > [!TIP]  
 > The system is designed to be injected into existing banking infrastructure. It does not replace the core banking system; it acts as an intelligent abstraction layer above it.
-
----
-
-## Process Flow: The Activation Pipeline
-
-How a raw transactional signal becomes a converted financial product.
-
-```mermaid
-flowchart TD
-    A[Customer Transactions / Signals] --> B{Signal Ingestion Router}
-    B --> C[Knowledge Graph Embedding]
-    B --> D[Temporal Event Trigger]
-    
-    C --> E[Recommendation Candidate Generation]
-    D --> E
-    
-    E --> F{Deterministic Policy Engine}
-    F -- Fails Rules --> G[Discard / Log]
-    F -- Passes Rules --> H[Next Best Action (NBA) Ranking]
-    
-    H --> I[LLM Explanation Translation]
-    I --> J{Consent Manager Check}
-    J -- Consent Revoked --> G
-    J -- Consent Granted --> K[Adaptive UI Rendering]
-    
-    K --> L[Customer View]
-    L -- Accepts --> M[Human Approval Queue]
-    M --> N[Audit Store / Execution]
-    
-    style A fill:#0f172a,stroke:#334155,color:#f8fafc
-    style F fill:#0a0a0a,stroke:#ef4444,color:#f8fafc
-    style N fill:#0a0a0a,stroke:#22c55e,color:#f8fafc
-    style I fill:#0f172a,stroke:#8b5cf6,color:#f8fafc
-```
-
----
-
-## Knowledge Graph Topology
-
-The fundamental data structure powering KAUTILYA's relational intelligence.
-
-```mermaid
-graph LR
-    C((Customer)):::primary
-    A[Account]:::node
-    T[Transaction]:::node
-    L[Life Event]:::node
-    P((Financial Product)):::target
-    G[Financial Goal]:::node
-    R[Risk Profile]:::node
-
-    C -- OWNS --> A
-    A -- GENERATES --> T
-    T -- INDICATES --> L
-    T -- FUNDS --> G
-    C -- HAS --> R
-    
-    L -- TRIGGERS_NEED_FOR -.-> P
-    R -- QUALIFIES_FOR -.-> P
-    G -- ACHIEVED_VIA -.-> P
-
-    classDef primary fill:#1e1e24,stroke:#3b82f6,stroke-width:2px,color:#fff;
-    classDef node fill:#1e1e24,stroke:#4b5563,stroke-width:1px,color:#d1d5db;
-    classDef target fill:#1e1e24,stroke:#10b981,stroke-width:2px,color:#fff;
-```
 
 ---
 
@@ -345,7 +322,7 @@ KAUTILYA/
 │   │   └── App.tsx           # Router and Shell
 ├── docs/                     # Documentation and Assets
 │   ├── architecture/         # System diagrams
-│   └── screenshots/          # High-res UI mockups
+│   └── assets/               # High-res UI mockups and SVG Banners
 └── README.md                 # You are here
 ```
 
