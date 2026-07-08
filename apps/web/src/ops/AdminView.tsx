@@ -71,17 +71,17 @@ export function AdminView() {
                 {auditLogs
                   .filter((r) => JSON.stringify(r).toLowerCase().includes(query.toLowerCase()))
                   .map((log, i) => (
-                    <tr key={log.event_id || i} className="hover:bg-black/[0.02] transition-colors">
-                      <td className="px-5 py-3 font-mono text-xs text-[#8E8E93] truncate max-w-[120px]" title={log.event_id}>{log.event_id}</td>
-                      <td className="px-5 py-3 font-medium text-[#1C1C1E]">{log.verb || "-"}</td>
+                    <tr key={log.audit_id || i} className="hover:bg-black/[0.02] transition-colors">
+                      <td className="px-5 py-3 font-mono text-xs text-[#8E8E93] truncate max-w-[120px]" title={log.audit_id}>{log.audit_id}</td>
+                      <td className="px-5 py-3 font-medium text-[#1C1C1E]">{log.action_verb || "-"}</td>
                       <td className="px-5 py-3 text-[#8E8E93]">{log.reg_class || "-"}</td>
                       <td className="px-5 py-3">
                         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase ${
-                          log.outcome === "rejected" ? "bg-[#FF3B30]/10 text-[#FF3B30]" : 
-                          log.outcome === "confirmed" ? "bg-[#34C759]/10 text-[#34C759]" : 
+                          (log.human_decision || log.decision) === "rejected" ? "bg-[#FF3B30]/10 text-[#FF3B30]" : 
+                          (log.human_decision || log.decision) === "confirmed" ? "bg-[#34C759]/10 text-[#34C759]" : 
                           "bg-[#007AFF]/10 text-[#007AFF]"
                         }`}>
-                          {log.outcome}
+                          {log.human_decision || log.decision}
                         </span>
                         {log.reason_code && <span className="ml-2 text-xs text-[#8E8E93]">- {log.reason_code}</span>}
                       </td>
